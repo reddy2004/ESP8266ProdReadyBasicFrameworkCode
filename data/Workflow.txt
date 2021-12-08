@@ -1,0 +1,101 @@
+----------------------------------
+     Overview
+----------------------------------
+
+The following document explains how the module is flashed and configured with remote config files located on a webserver.
+This style of configuration allows me to update the chip (OTA) remotely and change its functionality without having to use
+a flashing device all the time.
+
+You dont have to use the code provided by me. The below documentation gives you an overview of how the code flow and config happens.
+So all you have to do is change some variables in the code to point to your own webserver and proceed with development. The current
+setup will give you and idea of what you should do to make a similar setup of your own.
+
+To summarize,
+You should update the code so that your module knows where to download the config files.
+Create a webserver and put the config files there. The format of these files are described below
+
+-----------------------------------
+    Initial configuration
+-----------------------------------
+
+Once flashed, the module does not have any config of its own. It must be configured from the outside and firmware is flashed.
+
+Please follow the below steps to bring the module online.
+
+Step 1: The module does not know of any wifi networks, however it is hardcoded to connect to (tempWifi:tempPassword).
+        These values are defined in variables "String hardCodedSSID" and "String hardCodedPW".
+
+	Create a network (Access point) on your smartphone and power on the esp8266. It will find the wifi and connect to it.
+	Once connected, the module will download some basic files need to start its own wifi access point.
+
+	The config files is loaded from a hardcoded url. Ex. String hardCodedPermalink = "http://github/..<>../moduleconfig.json";
+	This file has the details of what Access point the module should have.
+
+Step 2: We are not sure if Step 1 succeeded as we may not have access to the serial port. Restart the module after a minute and then
+	check on your phone if any new Access Point is seen. It should be Of the form "ESP_RVIKRAMA". If present, connect to it with
+	the password "esprvikrama"
+
+Step 3: Once your smartphone is connected to tempWifi, go to your browser and navigate to http://192.168.4.1/config. Here you will
+        be able to change the Access point from tempWifi, to anything you want. You can also add multiple wifi networks for the module
+        to connect to.
+
+	(Note: This module will either act as an Access point or will connect to other networks in station  mode. Both AP and STA modes
+         are not active at the same time).
+
+	Enter your settings and reboot the chip.
+
+Step 4: After these settings, the chip will now boot and stay in AP Mode for first 5-6 minutes and then will connect to any of the configured
+        wifi networks. The first few minutes in AP Mode is to let you login to http://192.168.4.1/config and make any config changes if needed.
+        This behaviour is hardcoded.
+
+	You can also view the current config.json that is stored in the chip.
+--------------------
+   Update options:
+--------------------
+
+The modules firmware can be updated remotely, i.e without the need for a programmer. There are two ways
+
+Option 1: Start the module and connect your laptop/smartphone to its wifi network. Go to http://192.168.4.1/firmware and login with admin:admin.
+          In the file browser, locate your .bin file and click upload. The chip is flashed with the new firmware.
+
+Option 2: The module config file (http://github/..<>../moduleconfig.json) has an entry if any OTA (over the air update) is present. This option
+          will show up in http://192.168.4.1/config. If you like to update, just click on the update link there.
+	  The entry in moduleconfig.json for the new update will look like this.
+  		"upgrade": {
+   		  	"current": "nfox_linea_v0.00",
+    			"update" :  "nfox_linea_v1.00",
+			"link" :  "http://github.com/reddy2004/files/firmware.bin"
+ 	 	},
+	   The chip knows its current firmware( Ex. const char* current_build = "nfox_linea" ;). If the current matches, then the update firmware is valid. The update
+           firmware permalink is also in the json file.
+
+-----------------------------------------------------
+	Upstream communication (module config data)
+-----------------------------------------------------
+
+The module need to communicate information to you. This is done by sending data over wifi (obviously!). There are the module configurtion
+information is already coded in the code for you. There are two channels that it can use to  update the config data in a timely manner
+
+MQTT & HTTP
+
+If config.json changes, this module will upload this to the configured http urls or mqtt channel if mqtt is configured. You can log these
+changes if needed and may help in debugging etc. 
+
+There is no downstream module config changes since if the configurations are changing dynamically, it will lead to hard to find issues. Ideally
+module changes should be done via http://192.168.4.1/config during boot time.
+
+---------------------------------------------------
+	Upstream communication (user data)
+---------------------------------------------------
+
+This is the data that you, the developer wants to transmit to your webserver/mqtt server. Same as the config data update described above, there
+are two channels you can use to send data. HTTP & MQTT. Both these endpoints can be configured to your needs. This is done by HTTP POST and MQTT publish respectively.
+
+Once you business logic is implimented, all data that you want to send from module->server will be stored in data.json and uploaded periodically/on change events.
+Similarly the module can also download data from your server. ie server->module where you may pass data to be processed in the module. Download is done via
+HTTP GET and/or MQTT subscribe channels.
+
+Upstream data ex. sensor data, pin state data etc.
+Downstream data ex. Servo control data, pin 0/1 change data etc.
+
+This business logic should be added by you in the code.

@@ -1,0 +1,15 @@
+{
+  "miniWebFiles": {
+    "version" :  3,
+    "body": "http://128.199.20.242:8080/downloadfilesforesp8266/body.txt",
+    "logic": "http://128.199.20.242:8080/downloadfilesforesp8266/logic.js"
+  },
+  "firmWareupgrade": [
+    {
+      "current": "nfox_linea_11",
+      "update": "nfox_linea_v1.00",
+      "link": "http://github.com/reddy2004/files/firmware.bin",
+      "desc": "http://github.com/reddy2004/files/firmware.bin"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+		<div style="width:100%; background: #BBBBBB;">
+			<a href="#" onclick="toggleConfigJsonF()"> Show/hide (config.json) </a>
+		</div>
+		<div id="jsondump" style="width:100%;background: #BBBBBB;">
+			<textarea style="width:100%;  height: 150px;"; type='text' name='SSID' id="obj1" value='' disabled> </textarea>
+		</div>
+		<br>
+		<br>
+		<div id="update" style="width:100%; background: #DDDDDD;">
+			<form action='/doupdate'>
+			<label><b>There is an update available</b></label> <br> <br>
+			<label id="currentBuild" ></label> <br>
+			<label id="newBuild" ></label> <br>
+			<label id="newBuildLink" ></label> <br>
+			<div id="newBuildDesc" ></div> <br>
+			<input type='submit' value='Click to update' onclick="GoBack()">
+			</form>
+			<br>
+			<br>
+		</div>
+		<div>
+			<br><br>
+		</div>
+		<div id="tableOfWifi" style="width:100%; background: #999999;">
+			<b>List of all known Wifi  </b><br><br>
+			<table id="wifiTable">
+				<thead>
+                    <td> <b> Wifi </b> </td>
+                    <td> <b> Status </b></td>
+                    <td> <b> Edit </b></td>
+                    <td> <b> Delete </b></td>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			<input type='button' id="addNewWifi" value='Add New'>
+			<br>
+			<br>
+			<b>Access Point settings</b><br>
+			(This will cause module to reboot and you can login with <br>
+			new creds, Dont forget these values, if you forget your <br>
+			new AP credentials, then you are screwed!)
+			<br><br>
+			<form action='/saveap'> 
+				AP SSID <br> <input type='text' name='SSID' id="curr_ap_ssid" value=''><br>
+			    AP Password<br> <input type='text' name='Password' id="curr_ap_pw" value=''> <br><br> 
+			     <input type='submit' value='Save AP Creds'> (Remember!)
+		     </form>
+		</div>
+		<div id='uniqueWifi' style="width:100%; background: #BBBBBB;">
+		    <br> Please enter your router/access <br> point information for this module  <br> to connect to. <br><br>
+		    <form action='/savewifi'> SSID <br> <input type='text' name='SSID' id="curr_ssid" value=''><br>
+		     Password<br> <input type='text' name='Password' value='' id="curr_pw"> <br><br> 
+		    Manual<input type='checkbox' id='manual' name='manual'><br>
+		    <label>IP</label> <br> <input id='_ip' type='text' name='IP'  value='' disabled ><br>
+		    <label>Subset</label> <br><input id='_subnet' type='text'  name='Subnet' value='' disabled ><br>
+		    <label>Gateway</label> <br> <input id='_gateway' type='text' name='Gateway' value='' disabled ><br><br>
+		     <br><br>
+		    <br>
+		     <input type='submit' value='Save'> <input type='button' value='Back' onclick="GoBack()">
+		     </form>
+		 </div>
