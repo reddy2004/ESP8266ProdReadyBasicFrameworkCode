@@ -28,3 +28,5 @@ The code already is a working example that pings a http endpoint every 2 mintues
 Ex Relay Device: https://robu.in/product/esp8266-esp-01-5v-wifi-relay-module/?gclid=EAIaIQobChMIxtLm_vTM9AIV_p1LBR0L8wtoEAQYASABEgLdrPD_BwE
 
 Please go through the pdf and the text documentation to learn how to use this code as a starter for your project.
+
+If you find this piece of code useful, please consider 'star'ing the project.
