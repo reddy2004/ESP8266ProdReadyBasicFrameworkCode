@@ -27,6 +27,8 @@ This code has the following features:
 
 ![alt text](https://github.com/reddy2004/ESP8266ProdReadyBasicFrameworkCode/blob/main/images/miniWeb.png)
 
+Use code in https://github.com/reddy2004/Node_MQTT_HTTP_Server_For_ESP8266 as your server.
+
 The code already is a working example that pings a http endpoint every 2 mintues. It also has a mqtt client that connects to an mqtt server and is able to send and recive messages. One feature is implimented as an example "esp01_relay_pin", where a esp01 can control a relay. 
 
 Ex Relay Device: https://robu.in/product/esp8266-esp-01-5v-wifi-relay-module/?gclid=EAIaIQobChMIxtLm_vTM9AIV_p1LBR0L8wtoEAQYASABEgLdrPD_BwE
