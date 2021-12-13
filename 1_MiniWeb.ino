@@ -32,10 +32,20 @@ bool checkForMiniWebFiles()
     return (LittleFS.exists("miniWeb/body.txt") && LittleFS.exists("miniWeb/logic.js"));
 }
 
-void DoWebUpdate(String binFileURL, String file)
+/*
+ * https://arduino-esp8266.readthedocs.io/en/latest/ota_updates/readme.html#http-server
+ */
+void DoWebUpdate()
 {
-    WiFiClient client;
+    JsonObject firmwareUpgrade = (jsonConfig["updates"].isNull() == false)? jsonConfig["updates"] : jsonConfig.createNestedObject("updates");
+    String uri = firmwareUpgrade["newBuildLink"];
+    LOG_PRINTFLN(1, "**** Updating firmware : %s *****", uri.c_str());
 
+    WiFiClient client;
+    int idx = uri.lastIndexOf("/");
+    String binFileURL = uri.substring(0, idx);
+    String file = uri.substring(idx+1, uri.length());
+    
     t_httpUpdate_return ret = ESPhttpUpdate.update(client, binFileURL, 80, file);
       switch(ret) {
       case HTTP_UPDATE_FAILED:
@@ -261,7 +271,7 @@ void startMiniWebServer( )
         // here begin chunked transfer
         httpServer.send(200, "text/html", "");
         
-        httpServer.sendContent("<!DOCTYPE html><html><head> </head><body style='width: 500px;'>");
+        httpServer.sendContent("<!DOCTYPE html><html><head> </head><body style='width: 500px;  background: darkgrey; margin: auto;'>");
 
         File file22 = LittleFS.open("miniWeb/body.txt", "r");
         while (file22.available()) {
@@ -304,6 +314,7 @@ void startMiniWebServer( )
             }
             httpServer.send(200, "text/html", "<!DOCTYPE html><html><body> Will update and reboot automatically. No progress is shown on this site. Wait for sometime and try to reconnect.</body></html>");
             delay(100);
+            DoWebUpdate();
             RestartModule();
         }
     });
@@ -394,7 +405,45 @@ void startMiniWebServer( )
             }
             delay(100);
         }
-    });    
+    }); 
+
+    httpServer.on("/savemqtt", []() {
+      if (httpServer.method() == HTTP_GET) {
+            String server, un, pw, clientid, sub, pub, port;
+
+            for (uint8_t i=0; i<httpServer.args(); i++){
+                String key = httpServer.argName(i);
+                String value = httpServer.arg(i);
+                String message = "REQUEST: " + key + ": " + value;
+                Serial.println(message);
+                if (key == "Server")
+                  server = value;
+                else if(key == "Port")
+                  port = value;
+                else if(key == "MQTTUser") 
+                  un = value; 
+                else if(key == "MQTTPw")
+                  pw = value;
+                else if(key == "Clientid")
+                  clientid = value;
+                else if(key == "Sub")
+                  sub = value;
+                else if(key == "Pub")
+                  pub = value; 
+            }
+            if (server.length() < 8 || port.length() == 0 || un.length() == 0 || pw.length() ==0 || clientid.length() ==0 || pub.length() == 0 || sub.length() == 0) {
+                httpServer.send(200, "text/html", "<!DOCTYPE html><html><body> Error. Invalid inputs, please try again</body></html>");
+            } else {
+                httpServer.send(200, "text/html", "<!DOCTYPE html><html><body> Config sucess, rebooting....</body></html>");
+
+                UpdateMQTTConfig(sub, pub, clientid, un, pw, server, port.toInt());
+                SaveJsonToFile(&LittleFS);
+                RestartModule();
+                
+            }
+            delay(100);
+        }
+    }); 
 out:   
     httpServer.begin();
     print_heap_usage("After miniweb");

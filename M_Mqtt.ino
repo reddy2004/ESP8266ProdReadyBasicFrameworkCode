@@ -95,9 +95,9 @@ void SetupMQTTClientConfig()
         char fromfox[64];
         sprintf(tofox,"NFOXMQTT/%s/tofox",apssid);
         sprintf(fromfox,"NFOXMQTT/%s/fromfox",apssid);
-        UpdateMQTTConfig((String)tofox, (String)fromfox, apssid, apssid, appassword, "www.nightfoxsecurity.com", 88);
+        UpdateMQTTConfig((String)tofox, (String)fromfox, apssid, apssid, appassword, "128.199.20.242", 1883);
         struct MQTTConnData* mcd = GetMQTTConnectionData();
-        LOG_PRINTFLN(1, "Created MQTT config data!");
+        LOG_PRINTFLN(1, "Created MQTT config data!!!");
     }  
 }
 
@@ -224,10 +224,9 @@ void LoopForMQTT(void)
         network.stop();
   
         // Re-establish TCP connection with MQTT broker
-        //network.connect(mcd->host, mcd->port);
-        network.connect("nightfoxsecurity.com", mcd->port);//fix this to 1883
+        network.connect(mcd->host, mcd->port);
         if (!network.connected()) {
-            LOG_PRINTFLN(1, "Can't establish mqtt the TCP connection, port: %d", mcd->port);
+            LOG_PRINTFLN(1, "Can't establish mqtt the TCP connection, %s port: %d , usersetup %d, wifi %d",mcd->host, mcd->port, WaitForUserWifiSetup, WiFi.status() == WL_CONNECTED);
             return;
         }
         

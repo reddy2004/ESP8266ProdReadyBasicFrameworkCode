@@ -39,7 +39,7 @@ void setupWatchDogTimers()
 void setup() {
     Serial.begin(HW_UART_SPEED, SERIAL_8N1, SERIAL_TX_ONLY);
     Serial.println("Starting setup");
-
+    
     /*Setup watchdog timers and read chip information & config */
     setupWatchDogTimers();
     
@@ -64,6 +64,15 @@ void setup() {
         ConnectWifi(false, false);
     }
 
+    timeClient.begin();
+    // Set offset time in seconds to adjust for your timezone, for example:
+    // GMT +1 = 3600
+    // GMT +8 = 28800
+    // GMT -1 = -3600
+    // GMT 0 = 0
+    // IST => GMT + 5.5*3600
+    timeClient.setTimeOffset(19800);
+  
     DoHttpGetLoadBalancer();
     downloadAllFilesFromPermaLink();
     DisconnectWifi("miniWeb download");

@@ -7,13 +7,14 @@ HTTPClient http2;
  * Ex for this module
  * https://robu.in/product/esp8266-esp-01-5v-wifi-relay-module/?gclid=EAIaIQobChMIxtLm_vTM9AIV_p1LBR0L8wtoEAQYASABEgLdrPD_BwE
  */
+
 void SetPinStateForESP01Relay(bool state)
 {
-    pinMode(0, OUTPUT);
-    if (state)
-      digitalWrite(0, HIGH);
+    pinMode(15, OUTPUT);
+    if (state == 0)
+      digitalWrite(15, HIGH);
     else
-      digitalWrite(0, LOW);
+      digitalWrite(15, LOW);
     LOG_PRINTFLN(1,"In SetPinStateForESP01Relay, setting pin0 to %d", state);
 }
 
@@ -40,7 +41,7 @@ void NodePingServer()
 {
         LOG_PRINTFLN(1,"NodePingServer");
         WiFiClient client;   
-        http2.begin(client, "http://nightfoxsecurity.com:80/fox_ping"); //HTTP
+        http2.begin(client, "http://128.199.20.242:8080/fox_ping"); //HTTP
         http2.addHeader("Content-Type", "application/json");
 
         //Belongs to old nfxo system

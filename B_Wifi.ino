@@ -103,7 +103,7 @@ void ConnectWifi(bool isAPMode, bool useHardCodedCreds)
       WiFi.mode(WIFI_OFF);
 
       int retries = 0;
-      int retrycount = 3;
+      int retrycount = 1;
       
       if (isAPMode) {
           boolean useHardcodedAPValues = false;

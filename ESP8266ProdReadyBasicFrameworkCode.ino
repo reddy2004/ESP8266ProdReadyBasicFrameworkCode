@@ -11,6 +11,8 @@
 #include <ESP8266mDNS.h>
 #include <ESP8266httpUpdate.h>
 #include <MqttClient.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 
 /* Serial port baud rate */
 #define HW_UART_SPEED                9600L
@@ -83,6 +85,12 @@ int esp01FeatureCount = 3;
 ESP8266ModuleType thisModule = nodemcu;
 const char* current_build = "nfox_linea" ;
 
+/*
+ * NTP Time
+ */
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org");
+ 
 /*
  * All the dynamic runtime configuration of the chip is located here.
  */ 

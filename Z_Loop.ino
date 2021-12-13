@@ -1,3 +1,6 @@
+//if we cannot connect 3 times, i.e 6 minutes, just off the relay
+volatile int FailedToConnectTries = 0;
+
 /*
  * Connect to one of the configured wifi points if settings support, if not wait if we
  * are in WaitForUserWifiSetup mode. The function is called at the end of the loop
@@ -43,8 +46,8 @@ void loop() {
       
         //Just so we know when this module started
         jsonOutgoing["loopid"] = LoopCounterCurrentId;
-        
         LoopForMQTT();
+        timeClient.update();
     }
 
 out:
@@ -72,11 +75,22 @@ out:
               //or say saving 2 min of sensor data to flash etc.
               ConnectWifi(false, false);
 
-              NodePingServer();
+              if (WiFi.status() != WL_CONNECTED) {
+                FailedToConnectTries++;
+                if (FailedToConnectTries >= 3)
+                    LOG_PRINTFLN(1, "Turning off relay, as Wifi is not connected : counter : %d", FailedToConnectTries);
+                    digitalWrite(15, LOW); 
+              } else {
+                  FailedToConnectTries = 0;
+                  NodePingServer();
+              }
           }
     }
 
     if (tickOccured1min) {
+          String formattedTime = timeClient.getFormattedTime();
+          Serial.print("Formatted Time: ");
+          Serial.println(formattedTime); 
          // LOG_PRINTFLN(1, "Tick Occurred 1Min (loop id): %ld, (mins since boot): %d, (heap) : %ld, isConnected : %d", 
          //           LoopCounterCurrentId, minutesElapsedSinceBoot, ESP.getFreeHeap(),(WiFi.status() == WL_CONNECTED));
          tickOccured1min = false;
