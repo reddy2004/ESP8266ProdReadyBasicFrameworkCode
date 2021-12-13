@@ -1,12 +1,12 @@
-		<div style="width:100%; background: #BBBBBB;">
+	<br><br><div style="width:100%; background: lightgrey;">
 			<a href="#" onclick="toggleConfigJsonF()"> Show/hide (config.json) </a>
 		</div>
-		<div id="jsondump" style="width:100%;background: #BBBBBB;">
-			<textarea style="width:100%;  height: 150px;"; type='text' name='SSID' id="obj1" value='' disabled> </textarea>
+		<div id="jsondump" style="width:100%;background: lightblue; padding:  10px; border-radius: 20px; border-color: black;border-style: solid;">
+			<textarea style="width:100%;  height: 350px;"; type='text' name='SSID' id="obj1" value='' disabled> </textarea>
 		</div>
 		<br>
 		<br>
-		<div id="update" style="width:100%; background: #DDDDDD;">
+		<div id="update" style="width:100%; background: lightpink; padding: 10px; border-radius: 20px; border-color: black;border-style: solid;">
 			<form action='/doupdate'>
 			<label><b>There is an update available</b></label> <br> <br>
 			<label id="currentBuild" ></label> <br>
@@ -15,18 +15,17 @@
 			<div id="newBuildDesc" ></div> <br>
 			<input type='submit' value='Click to update' onclick="GoBack()">
 			</form>
-			<br>
-			<br>
+
 		</div>
 		<div>
 			<br><br>
 		</div>
-		<div id="tableOfWifi" style="width:100%; background: #999999;">
+		<div id="tableOfWifi" style="width:100%; background: lightblue; padding: 10px; border-radius: 20px; border-color: black;border-style: solid;">
 			<b>List of all known Wifi  </b><br><br>
 			<table id="wifiTable">
 				<thead>
                     <td> <b> Wifi </b> </td>
-                    <td> <b> Status </b></td>
+                    <td> <b> PW </b></td>
                     <td> <b> Edit </b></td>
                     <td> <b> Delete </b></td>
 				</thead>
@@ -37,9 +36,9 @@
 			<br>
 			<br>
 			<b>Access Point settings</b><br>
-			(This will cause module to reboot and you can login with <br>
-			new creds, Dont forget these values, if you forget your <br>
-			new AP credentials, then you are screwed!)
+			(This will cause module to reboot and you can login <br>
+			with new creds, Dont forget these values, if you <br>
+			forget your new AP credentials, then you are screwed!)
 			<br><br>
 			<form action='/saveap'> 
 				AP SSID <br> <input type='text' name='SSID' id="curr_ap_ssid" value=''><br>
@@ -47,7 +46,7 @@
 			     <input type='submit' value='Save AP Creds'> (Remember!)
 		     </form>
 		</div>
-		<div id='uniqueWifi' style="width:100%; background: #BBBBBB;">
+		<div id='uniqueWifi' style="width:100%; background: lightskyblue; padding: 10px; border-radius: 20px; border-color: black;border-style: solid;">
 		    <br> Please enter your router/access <br> point information for this module  <br> to connect to. <br><br>
 		    <form action='/savewifi'> SSID <br> <input type='text' name='SSID' id="curr_ssid" value=''><br>
 		     Password<br> <input type='text' name='Password' value='' id="curr_pw"> <br><br> 
@@ -60,3 +59,18 @@
 		     <input type='submit' value='Save'> <input type='button' value='Back' onclick="GoBack()">
 		     </form>
 		 </div>
+		 <br><br>
+		<div id='mqttconfig' style="width:100%; background: lightpink; padding: 10px; border-radius: 20px; border-color: black;border-style: solid;">
+		    <br> <b> Please enter MQTT broker information </b> <br><br>
+		    <form action='/savemqtt'> Server <br> <input type='text' name='Server' id="mqttServer" value=''><br>
+		     Port<br> <input type='text' name='Port' value='' id="mqttPort"> <br><br> 
+		    <label>Username</label> <br> <input id='mqttUn' type='text' name='MQTTUser'  value=''><br>
+		    <label>Password</label> <br><input id='mqttPw' type='text'  name='MQTTPw' value=''  ><br>
+		    <label>Subscribe Channel</label> <br><input id='mqttSub' type='text'  name='Sub' value=''  ><br>
+		    <label>Publish Channel</label> <br><input id='mqttPub' type='text'  name='Pub' value=''  ><br>
+		    <label>ClientID</label> <br> <input id='mqttClient' type='text' name='Clientid' value=''  >
+		    <br><br>
+		     <input type='submit' value='Save MQTT Settings'>
+		     </form>
+		 </div>
+		 <br><br>

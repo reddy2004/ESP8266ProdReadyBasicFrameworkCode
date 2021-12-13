@@ -1,0 +1,207 @@
+<!DOCTYPE html><html><head> </head><body style='width: 350px; background: darkgrey; margin: auto;'>		<br><br><div style="width:100%; background: lightgrey;">
+			<a href="#" onclick="toggleConfigJsonF()"> Show/hide (config.json) </a>
+		</div>
+		<div id="jsondump" style="width:100%;background: lightblue; padding:  10px; border-radius: 20px; border-color: black;border-style: solid;">
+			<textarea style="width:100%;  height: 350px;"; type='text' name='SSID' id="obj1" value='' disabled> </textarea>
+		</div>
+		<br>
+		<br>
+		<div id="update" style="width:100%; background: lightpink; padding: 10px; border-radius: 20px; border-color: black;border-style: solid;">
+			<form action='/doupdate'>
+			<label><b>There is an update available</b></label> <br> <br>
+			<label id="currentBuild" ></label> <br>
+			<label id="newBuild" ></label> <br>
+			<label id="newBuildLink" ></label> <br>
+			<div id="newBuildDesc" ></div> <br>
+			<input type='submit' value='Click to update' onclick="GoBack()">
+			</form>
+
+		</div>
+		<div>
+			<br><br>
+		</div>
+		<div id="tableOfWifi" style="width:100%; background: lightblue; padding: 10px; border-radius: 20px; border-color: black;border-style: solid;">
+			<b>List of all known Wifi  </b><br><br>
+			<table id="wifiTable">
+				<thead>
+                    <td> <b> Wifi </b> </td>
+                    <td> <b> PW </b></td>
+                    <td> <b> Edit </b></td>
+                    <td> <b> Delete </b></td>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			<input type='button' id="addNewWifi" value='Add New'>
+			<br>
+			<br>
+			<b>Access Point settings</b><br>
+			(This will cause module to reboot and you can login <br>
+			with new creds, Dont forget these values, if you <br>
+			forget your new AP credentials, then you are screwed!)
+			<br><br>
+			<form action='/saveap'> 
+				AP SSID <br> <input type='text' name='SSID' id="curr_ap_ssid" value=''><br>
+			    AP Password<br> <input type='text' name='Password' id="curr_ap_pw" value=''> <br><br> 
+			     <input type='submit' value='Save AP Creds'> (Remember!)
+		     </form>
+		</div>
+		<div id='uniqueWifi' style="width:100%; background: lightskyblue; padding: 10px; border-radius: 20px; border-color: black;border-style: solid;">
+		    <br> Please enter your router/access <br> point information for this module  <br> to connect to. <br><br>
+		    <form action='/savewifi'> SSID <br> <input type='text' name='SSID' id="curr_ssid" value=''><br>
+		     Password<br> <input type='text' name='Password' value='' id="curr_pw"> <br><br> 
+		    Manual<input type='checkbox' id='manual' name='manual'><br>
+		    <label>IP</label> <br> <input id='_ip' type='text' name='IP'  value='' disabled ><br>
+		    <label>Subset</label> <br><input id='_subnet' type='text'  name='Subnet' value='' disabled ><br>
+		    <label>Gateway</label> <br> <input id='_gateway' type='text' name='Gateway' value='' disabled ><br><br>
+		     <br><br>
+		    <br>
+		     <input type='submit' value='Save'> <input type='button' value='Back' onclick="GoBack()">
+		     </form>
+		 </div>
+		 <br><br>
+		<div id='mqttconfig' style="width:100%; background: lightpink; padding: 10px; border-radius: 20px; border-color: black;border-style: solid;">
+		    <br> <b> Please enter MQTT broker information </b> <br><br>
+		    <form action='/savemqtt'> Server <br> <input type='text' name='Server' id="mqttServer" value=''><br>
+		     Port<br> <input type='text' name='Port' value='' id="mqttPort"> <br><br> 
+		    <label>Username</label> <br> <input id='mqttUn' type='text' name='MQTTUser'  value=''><br>
+		    <label>Password</label> <br><input id='mqttPw' type='text'  name='MQTTPw' value=''  ><br>
+		    <label>Subscribe Channel</label> <br><input id='mqttSub' type='text'  name='Sub' value=''  ><br>
+		    <label>Publish Channel</label> <br><input id='mqttPub' type='text'  name='Pub' value=''  ><br>
+		    <label>ClientID</label> <br> <input id='mqttClient' type='text' name='Clientid' value=''  >
+		    <br><br>
+		     <input type='submit' value='Save MQTT Settings'>
+		     </form>
+		 </div>
+		 <br><br>
+
+		 <script>var obj1str = '{"Chip":{"type":"nodemcu","chipid":2735547,"flashid":1458400,"flashrealsize":4194304,"mac":"5C:CF:7F:29:BD:BB","sdk":"2.2.2-dev(38a443e)","flashsize":4194304,"flashmode":"DIO","flashspeed":40000000,"firmware":"nfox_linea"},"APMode":{"apssid":"Linea","appw":"myappasswd"},"Flags":{"pushdata":false,"armedforany":false},"wifiList":[{"ssid":"XYZ123","pw":"pwxyz123","ip":"","subnet":"","gw":""},{"ssid":"ABC123","pw":"pwabc123","ip":"","subnet":"","gw":""}],"Features":["esp01_relay_pin","wifi_always_on_mqtt","ota","mqttClient"],"MQTT":{"publish":"NFOXMQTT/Linea/fromfox","subscribe":"NFOXMQTT/Linea/tofox","clientid":"Linea","username":"Linea","password":"mymqttpw","server":"128.199.20.242","port":1883},"miniWeb":{"version":4,"body":"http://128.199.20.242:8080/downloadfilesforesp8266/body.txt","logic":"http://128.199.20.242:8080/downloadfilesforesp8266/logic.js","update":0,"upgrade":0},"updates":{"currentBuild":"nfox_linea","newBuild":"nfox_linea_1.1","newBuildLink":"github.com/reddy2004/notworkinglink","isUpdateAvailable":true,"newBuildDesc":"www.google.com"}}'; var obj1 = JSON.parse(obj1str);document.getElementById('manual').onchange = function () {
+	document.getElementById('_ip').disabled = !this.checked;
+	document.getElementById('_subnet').disabled = !this.checked;
+	document.getElementById('_gateway').disabled = !this.checked;
+}
+
+document.getElementById('uniqueWifi').style.display = "none";
+
+function DeleteWifi(ssid) {
+	fetch("/delete?SSID=" + ssid).then(function (response) {
+		alert("Command sent. Rebooting. Please check /config after reboot");
+	}).then(function (data) {
+		alert("Command sent. Rebooting. Please check /config after reboot");
+	}).catch(function () {
+
+	});
+}
+document.getElementById('addNewWifi').onclick = function () {
+	document.getElementById('tableOfWifi').style.display = "none";
+	document.getElementById('uniqueWifi').style.display = '';
+	document.getElementById('uniqueWifi').display = 'block';
+}
+
+function EditWifiSetting(ssid) {
+	//Update the form with data
+
+	var found = false;
+	for (var i = 0; i < obj1.wifiList.length; i++) {
+		if (obj1.wifiList[i].ssid == ssid) {
+			document.getElementById('curr_ssid').value = obj1.wifiList[i].ssid;
+			document.getElementById('curr_pw').value = obj1.wifiList[i].pw;
+			document.getElementById('_ip').value = obj1.wifiList[i].ip;
+			document.getElementById('_subnet').value = obj1.wifiList[i].subnet;
+			document.getElementById('_gateway').value = obj1.wifiList[i].gateway;
+			found = true;
+		}
+	}
+	if (found == false) {
+		alert("Error!");
+		return;
+	}
+
+	document.getElementById('tableOfWifi').style.display = "none";
+	document.getElementById('uniqueWifi').style.display = '';
+	document.getElementById('uniqueWifi').display = 'block';
+}
+
+function GoBack() {
+	document.getElementById('uniqueWifi').style.display = "none";
+	document.getElementById('tableOfWifi').style.display = '';
+	document.getElementById('tableOfWifi').display = 'block';
+}
+
+
+//hide the text area
+var toggleConfigJson = false;
+document.getElementById('jsondump').style.display = "none";
+
+function toggleConfigJsonF() {
+	if (toggleConfigJson) {
+		toggleConfigJson = false;
+		document.getElementById('jsondump').style.display = "none";
+	} else {
+		document.getElementById('jsondump').style.display = '';
+		document.getElementById('jsondump').display = 'block';
+		document.getElementById('obj1').value = JSON.stringify(obj1, null, 2);
+		toggleConfigJson = true;
+	}
+}
+
+//Now generate the table dynamically
+for (var i = 0; i < obj1.wifiList.length; i++) {
+	var table = document.getElementById("wifiTable");
+	let ssid1 = obj1.wifiList[i].ssid;
+
+	var row = table.insertRow(1);
+	// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+	var cell3 = row.insertCell(2);
+	var cell4 = row.insertCell(3);
+
+	// Add some text to the new cells:
+	cell1.innerHTML = obj1.wifiList[i].ssid;
+	cell2.innerHTML = obj1.wifiList[i].pw;
+
+	cell3.innerHTML = "<a href='#'> Edit </a>";
+	cell3.onclick = function () { EditWifiSetting(ssid1); };
+	cell4.innerHTML = "<a href='#'> Delete </a>";
+	cell4.onclick = function () { DeleteWifi(ssid1); };
+}
+
+//show the AP Mode settings
+document.getElementById("curr_ap_ssid").value = obj1.APMode.apssid;
+document.getElementById("curr_ap_pw").value = obj1.APMode.appw;
+
+if (typeof (obj1.updates) != "undefined" && obj1.updates.isUpdateAvailable) {
+	document.getElementById('currentBuild').innerHTML = "current:" + obj1.updates.currentBuild;
+	document.getElementById('newBuild').innerHTML = "new:" + obj1.updates.newBuild;
+	document.getElementById('newBuildLink').innerHTML = "link:" + obj1.updates.newBuildLink;
+	document.getElementById('newBuildDesc').innerHTML += "<a href='" + obj1.updates.newBuildDesc + "' target='_blank'> read description </a>";
+	document.getElementById('update').style.display = '';
+	document.getElementById('update').display = 'block';
+} else {
+	document.getElementById('update').style.display = "none";
+}
+
+	var hasMQTT = false;
+	console.log(obj1.Features);
+	for (var i=0;i<obj1.Features.length;i++) {
+
+		if (obj1.Features[i] == "mqttClient") {
+			hasMQTT = true;
+			break;
+		}
+	}
+	if (hasMQTT) {
+		var mqtt = obj1.MQTT;
+		document.getElementById('mqttServer').value = mqtt.server;
+		document.getElementById('mqttPort').value = mqtt.port;
+		document.getElementById('mqttUn').value = mqtt.username;
+		document.getElementById('mqttPw').value = mqtt.password;
+		document.getElementById('mqttSub').value = mqtt.subscribe;
+		document.getElementById('mqttPub').value = mqtt.publish;
+		document.getElementById('mqttClient').value = mqtt.clientid;
+		document.getElementById('mqttconfig').value = 'block';
+	} else {
+		document.getElementById('mqttconfig').style.display = "none";
+	}
+</script></body></html>

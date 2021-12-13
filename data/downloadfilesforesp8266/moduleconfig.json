@@ -1,6 +1,6 @@
 {
   "miniWebFiles": {
-    "version" :  3,
+    "version" :  5,
     "body": "http://128.199.20.242:8080/downloadfilesforesp8266/body.txt",
     "logic": "http://128.199.20.242:8080/downloadfilesforesp8266/logic.js"
   },

@@ -104,3 +104,26 @@ if (typeof (obj1.updates) != "undefined" && obj1.updates.isUpdateAvailable) {
 } else {
 	document.getElementById('update').style.display = "none";
 }
+
+var hasMQTT = false;
+console.log(obj1.Features);
+for (var i=0;i<obj1.Features.length;i++) {
+
+	if (obj1.Features[i] == "mqttClient") {
+		hasMQTT = true;
+		break;
+	}
+}
+if (hasMQTT) {
+	var mqtt = obj1.MQTT;
+	document.getElementById('mqttServer').value = mqtt.server;
+	document.getElementById('mqttPort').value = mqtt.port;
+	document.getElementById('mqttUn').value = mqtt.username;
+	document.getElementById('mqttPw').value = mqtt.password;
+	document.getElementById('mqttSub').value = mqtt.subscribe;
+	document.getElementById('mqttPub').value = mqtt.publish;
+	document.getElementById('mqttClient').value = mqtt.clientid;
+	document.getElementById('mqttconfig').value = 'block';
+} else {
+	document.getElementById('mqttconfig').style.display = "none";
+}
