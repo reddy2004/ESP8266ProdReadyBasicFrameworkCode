@@ -91,6 +91,9 @@ out:
           String formattedTime = timeClient.getFormattedTime();
           Serial.print("Formatted Time: ");
           Serial.println(formattedTime); 
+          char tomqtt[128];
+          sprintf(tomqtt, "loopid = %ld", LoopCounterCurrentId);
+          publishMessage(tomqtt, strlen(tomqtt));
          // LOG_PRINTFLN(1, "Tick Occurred 1Min (loop id): %ld, (mins since boot): %d, (heap) : %ld, isConnected : %d", 
          //           LoopCounterCurrentId, minutesElapsedSinceBoot, ESP.getFreeHeap(),(WiFi.status() == WL_CONNECTED));
          tickOccured1min = false;

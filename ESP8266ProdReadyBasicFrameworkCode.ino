@@ -129,7 +129,7 @@ DynamicJsonDocument jsonIncomingMqtt(512);
 String hardCodedSSID = "tempWifi";
 String hardCodedPW = "tempPassword";
 String hardCodedPermalink = "http://128.199.20.242:8080/downloadfilesforesp8266/moduleconfig.json";
-
+String hardCodedServerIP = "128.199.20.242";
 /*
  * minute timers. Use like a watchdog. Just a placeholder for now.
  */

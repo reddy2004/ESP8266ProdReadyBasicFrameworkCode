@@ -42,16 +42,22 @@ void setup() {
     
     /*Setup watchdog timers and read chip information & config */
     setupWatchDogTimers();
-    
+
     ReadJsonFromFile(&LittleFS);
- 
+
+    if ((jsonConfig["APMode"]).isNull()) {
+      CreateNewAccessPointSetting(hardCodedSSID,hardCodedPW);
+      RestartModule();
+    }
+
     ComputeChipParameters();
     ResetInCoreFlags();
-    SetupMQTT();
 
     Serial.println("----------------------- Runtime config.json -----------------------------");
     serializeJsonPretty(jsonConfig, Serial);
     Serial.println("----------------------- ------------------- -----------------------------");
+
+    SetupMQTT();
 
     yield();
     if (IsThereAnyConfiguredWifi() == false) {
@@ -67,8 +73,6 @@ void setup() {
     timeClient.begin();
     // Set offset time in seconds to adjust for your timezone, for example:
     // GMT +1 = 3600
-    // GMT +8 = 28800
-    // GMT -1 = -3600
     // GMT 0 = 0
     // IST => GMT + 5.5*3600
     timeClient.setTimeOffset(19800);

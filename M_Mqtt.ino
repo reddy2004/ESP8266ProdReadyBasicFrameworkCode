@@ -57,13 +57,15 @@ struct MQTTConnData* GetMQTTConnectionData() {
     if (mcd.isValid) {
       return &mcd;
     }
-    JsonObject mqtt = ((jsonConfig["MQTT"]).isNull() == false)? jsonConfig["MQTT"] : jsonConfig.createNestedObject("MQTT");
 
-    if (mqtt.isNull()) {
+    if ((jsonConfig["MQTT"]).isNull()) {
         LOG_PRINTFLN(1, "MQTT data is empty. Aborting MQTT Client creation");
         mcd.isValid = false;
         return &mcd;
     }
+
+    JsonObject mqtt = ((jsonConfig["MQTT"]).isNull() == false)? jsonConfig["MQTT"] : jsonConfig.createNestedObject("MQTT");
+
     sprintf(mcd.subscribeChannel,"%s",mqtt["subscribe"].as<char*>());
     sprintf(mcd.publishChannel,"%s",mqtt["publish"].as<char*>());
     sprintf(mcd.clientid,"%s",mqtt["clientid"].as<char*>());    
@@ -93,11 +95,13 @@ void SetupMQTTClientConfig()
         String appassword = wifiAPCreds["appw"];
         char tofox[64];
         char fromfox[64];
-        sprintf(tofox,"NFOXMQTT/%s/tofox",apssid);
-        sprintf(fromfox,"NFOXMQTT/%s/fromfox",apssid);
-        UpdateMQTTConfig((String)tofox, (String)fromfox, apssid, apssid, appassword, "128.199.20.242", 1883);
+        sprintf(tofox,"NFOXMQTT/%s/tofox",apssid.c_str());
+        sprintf(fromfox,"NFOXMQTT/%s/fromfox",apssid.c_str());
+        UpdateMQTTConfig((String)tofox, (String)fromfox, apssid, apssid, appassword, hardCodedServerIP.c_str(), 1883);
         struct MQTTConnData* mcd = GetMQTTConnectionData();
         LOG_PRINTFLN(1, "Created MQTT config data!!!");
+
+        RestartModule();
     }  
 }
 
